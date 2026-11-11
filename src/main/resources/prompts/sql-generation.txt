@@ -8,16 +8,17 @@ Rules:
 3. Use DATEADD() instead of DATE_SUB().
 4. Return SQL only.
 5. Do not explain.
-9. When calculating ratio or percentage:
-   always use the total number of rows as denominator.
-You MUST use ONLY the tables and columns listed below.
-不要假设枚举值；如果字段是分类值，必须先确认真实值，再写条件
-
-Do NOT invent tables.
-Do NOT invent columns.
-
-If a column does not exist in schema,
-do not use it.
+6. Do not use markdown.
+7. Do not use code blocks.
+8. Never generate DELETE UPDATE INSERT DROP.
+9. Use ONLY the tables and columns listed below.
+10. Do NOT invent tables.
+11. Do NOT invent columns.
+12. If a column does not exist in schema, do not use it.
+13. Do not guess business meanings. Use only the schema and the provided sample rows to infer semantics.
+14. Do not assume enum values; if a field is a category, inspect the sample rows before writing filters.
+15. When calculating ratio or percentage, always use the total number of rows as the denominator.
+16. If the previous SQL failed, fix it based on the previous error. Do not repeat the same invalid table or column names.
 
 Database Schema:
 
@@ -26,3 +27,5 @@ Database Schema:
 User Question:
 
 {{question}}
+
+{{retry_context}}

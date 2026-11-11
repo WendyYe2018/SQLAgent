@@ -3,10 +3,12 @@ package org.sqlagent.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.sqlagent.util.SqlCleaner;
+import org.sqlagent.util.SqlValidator;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,33 +28,53 @@ public class OllamaAiService {
     @Autowired
     PromptService promptService;
 
-    public String generateSql(String question) throws IOException {
+    @Autowired
+    SqlService sqlService;
 
-        String prompt =
-                promptService
-                        .loadPrompt(
-                                "sql-generation.txt");
+    public String generateSql(String question) {
+        return generateSql(question, null, null);
+    }
 
-        prompt = prompt
-                .replace(
-                        "{{schema}}",
-                        schemaService.getSchema().toString()
-                )
-                .replace(
-                        "{{question}}",
-                        question
-                );
+    public String generateSql(String question, String lastSql, String lastError) {
+        String prompt = promptService.loadPrompt("sql-generation.txt");
+        String retryContext = (lastSql == null || lastError == null)
+                ? ""
+                : "Previous SQL:\n" + lastSql + "\n\nPrevious error:\n" + lastError;
+
+        prompt = prompt.replace("{{schema}}", schemaService.getSchema().toString())
+                .replace("{{question}}", question)
+                .replace("{{retry_context}}", retryContext);
 
         log.info("收到请求: {}", question);
 
         try {
-            return SqlCleaner.clean(
-                    callOllama(prompt)
-            );
+            return SqlCleaner.clean(callOllama(prompt));
         } catch (Exception e) {
             log.error("生成 SQL 失败，question={}", question, e);
             throw e;
         }
+    }
+
+    public Map<String, Object> queryWithRetry(String question) {
+        String sql = null;
+        String lastError = null;
+
+        for (int i = 0; i < 3; i++) {
+            sql = generateSql(question, sql, lastError);
+            try {
+                SqlValidator.validate(sql);
+                List<Map<String, Object>> data = sqlService.execute(sql);
+                Map<String, Object> result = new HashMap<>();
+                result.put("sql", sql);
+                result.put("data", data);
+                return result;
+            } catch (Exception e) {
+                lastError = e.getMessage();
+                log.warn("SQL 执行失败，重试第 {} 次，question={}，sql={}，error={}", i + 1, question, sql, lastError);
+            }
+        }
+
+        throw new RuntimeException("SQL 生成与执行失败，已重试 3 次，最后错误: " + lastError);
     }
 
     private String callOllama(String prompt) {
@@ -126,31 +148,30 @@ public class OllamaAiService {
     }
 
     @Cacheable(value = "example-questions", key = "'default'")
-    public List<String> generateExamples()  {
-        String schema =
-                schemaService.getSchema();
+    public List<String> generateExamples() {
+        return generateExamples(false);
+    }
 
-        String prompt =
-                promptService.loadPrompt(
-                        "example-questions.txt"
-                );
+    public List<String> generateExamples(boolean forceRefresh) {
+        String schema = schemaService.getSchema();
 
-        prompt = prompt.replace(
-                "{{schema}}",
-                schema
-        );
+        String prompt = promptService.loadPrompt("example-questions.txt");
+        prompt = prompt.replace("{{schema}}", schema);
 
         try {
-            String result =
-                    callOllama(prompt);
-
-            return Arrays.stream(
-                            result.split("\n"))
+            String result = callOllama(prompt);
+            return Arrays.stream(result.split("\n"))
                     .filter(s -> !s.isBlank())
+                    .map(String::trim)
                     .toList();
         } catch (Exception e) {
             log.error("生成推荐问题失败，schema={}", schema, e);
             throw e;
         }
+    }
+
+    @CacheEvict(value = "example-questions", key = "'default'")
+    public void forceRefresh() {
+        log.info("已清空推荐问题缓存");
     }
 }

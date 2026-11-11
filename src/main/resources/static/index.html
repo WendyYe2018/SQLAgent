@@ -69,6 +69,25 @@
            gap: 10px;
        }
 
+       .example-header {
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+           gap: 12px;
+           margin-bottom: 12px;
+       }
+
+       .refresh-btn {
+           border: 1px solid #dbeafe;
+           background: #eff6ff;
+           color: #2563eb;
+           border-radius: 10px;
+           padding: 8px 12px;
+           cursor: pointer;
+           font-size: 12px;
+           font-weight: bold;
+       }
+
        .example-btn {
            width: 100%;
            border: 1px solid #dbeafe;
@@ -225,17 +244,23 @@
            </main>
 
            <aside class="panel">
-               <h3 class="examples-title">💡 推荐问题</h3>
+               <div class="example-header">
+                   <h3 class="examples-title">💡 推荐问题</h3>
+                   <button class="refresh-btn" onclick="loadExamples(true)">换一批</button>
+               </div>
                <div id="examples" class="example-list">加载中...</div>
            </aside>
        </div>
     </div>
 
     <script>
-       async function loadExamples() {
+       async function loadExamples(forceRefresh = false) {
            const container = document.getElementById('examples');
+           container.innerHTML = '<div class="empty">加载中...</div>';
+
            try {
-               const res = await fetch('/api/examples');
+               const url = forceRefresh ? '/api/examples?refresh=true' : '/api/examples';
+               const res = await fetch(url);
                const list = await res.json();
 
                if (!list || list.length === 0) {

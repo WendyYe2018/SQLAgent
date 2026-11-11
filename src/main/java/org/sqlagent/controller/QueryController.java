@@ -9,6 +9,7 @@ import org.sqlagent.service.SqlService;
 import org.sqlagent.util.SqlValidator;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -29,8 +30,11 @@ public class QueryController {
 
 
     @GetMapping("/examples")
-    public List<String> examples() {
-
+    public List<String> examples(@RequestParam(value = "refresh", required = false, defaultValue = "false") boolean refresh) {
+        if (refresh) {
+            ollamaAiService.forceRefresh();
+            return ollamaAiService.generateExamples();
+        }
         return ollamaAiService.generateExamples();
     }
 
@@ -41,38 +45,25 @@ public class QueryController {
         QueryResponse response =
                 new QueryResponse();
         try {
+            String question = request.getQuestion();
+            Map<String, Object> queryResult = ollamaAiService.queryWithRetry(question);
+            String sql = (String) queryResult.get("sql");
+            List<Map<String, Object>> data = (List<Map<String, Object>>) queryResult.get("data");
 
-            String sql =
-                    ollamaAiService.generateSql(
-                            request.getQuestion());
             response.setSql(sql);
-
-            SqlValidator.validate(sql);
-
-            var data =
-                    sqlService.execute(sql);
+            response.setData(data);
 
             String answer =
                     ollamaAiService.generateAnswer(
-                            request.getQuestion(),
+                            question,
                             data
                     );
 
             response.setAnswer(answer);
-            response.setData(data);
 
         } catch (Exception e) {
-
             response.setAnswer("查询失败");
-            response.setError(
-                    e.getMessage()
-            );
-
-            // 即使 SQL 执行失败，也要保留正在显示的 SQL 文本，方便排查
-            if (response.getSql() == null) {
-                response.setSql("无法生成有效 SQL");
-            }
-
+            response.setError(e.getMessage());
             e.printStackTrace();
         }
 
