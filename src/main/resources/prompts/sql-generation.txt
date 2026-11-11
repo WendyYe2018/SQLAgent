@@ -8,11 +8,10 @@ Rules:
 3. Use DATEADD() instead of DATE_SUB().
 4. Return SQL only.
 5. Do not explain.
-6. Do not use markdown.
-7. Do not use code blocks.
-8. Never generate DELETE UPDATE INSERT DROP.
-
+9. When calculating ratio or percentage:
+   always use the total number of rows as denominator.
 You MUST use ONLY the tables and columns listed below.
+不要假设枚举值；如果字段是分类值，必须先确认真实值，再写条件
 
 Do NOT invent tables.
 Do NOT invent columns.

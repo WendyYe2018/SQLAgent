@@ -45,6 +45,8 @@ public class QueryController {
             String sql =
                     ollamaAiService.generateSql(
                             request.getQuestion());
+            response.setSql(sql);
+
             SqlValidator.validate(sql);
 
             var data =
@@ -57,16 +59,19 @@ public class QueryController {
                     );
 
             response.setAnswer(answer);
-            response.setSql(sql);
             response.setData(data);
 
         } catch (Exception e) {
 
             response.setAnswer("查询失败");
-
             response.setError(
                     e.getMessage()
             );
+
+            // 即使 SQL 执行失败，也要保留正在显示的 SQL 文本，方便排查
+            if (response.getSql() == null) {
+                response.setSql("无法生成有效 SQL");
+            }
 
             e.printStackTrace();
         }

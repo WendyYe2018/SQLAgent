@@ -43,7 +43,7 @@ public class OllamaAiService {
                         question
                 );
 
-        log.info("生成 SQL Prompt: {}", prompt);
+        log.info("收到请求: {}", question);
 
         try {
             return SqlCleaner.clean(
@@ -64,8 +64,6 @@ public class OllamaAiService {
         request.put("prompt", prompt);
         request.put("stream", false);
 
-        log.info("Ollama 请求: {}", request);
-
         try {
             Map response =
                     restTemplate.postForObject(
@@ -74,7 +72,7 @@ public class OllamaAiService {
                             Map.class
                     );
 
-            log.info("Ollama 原始返回: {}", response);
+            log.info("Ollama 原始返回: {}",  response.get("response"));
 
             return String.valueOf(
                     response.get("response")
