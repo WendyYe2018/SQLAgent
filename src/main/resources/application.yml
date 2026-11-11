@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1434;databaseName=DataCopilot;encrypt=false
+    username: sa
+    password: Ywx2018!00000000
+
+server:
+  port: 8082
+
+logging:
+  level:
+    root: INFO
+    org.sqlagent: DEBUG
+  file:
+    name: logs/sql-agent.log

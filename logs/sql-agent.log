@@ -1,0 +1,427 @@
+2026-11-11T16:32:36.535+08:00  INFO 37900 --- [main] org.sqlagent.SqlAgentApplication         : Starting SqlAgentApplication using Java 21.0.13 with PID 37900 (C:\Users\HNU_W\.m2\repository\org\example\SpringBoot1\SQLAgent\target\classes started by HNU_W in C:\Users\HNU_W\.m2\repository\org\example\SpringBoot1\SQLAgent)
+2026-11-11T16:32:36.537+08:00 DEBUG 37900 --- [main] org.sqlagent.SqlAgentApplication         : Running with Spring Boot v3.5.6, Spring v6.2.11
+2026-11-11T16:32:36.538+08:00  INFO 37900 --- [main] org.sqlagent.SqlAgentApplication         : No active profile set, falling back to 1 default profile: "default"
+2026-11-11T16:32:37.574+08:00  INFO 37900 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8082 (http)
+2026-11-11T16:32:37.591+08:00  INFO 37900 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-11-11T16:32:37.591+08:00  INFO 37900 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.46]
+2026-11-11T16:32:37.694+08:00  INFO 37900 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-11-11T16:32:37.694+08:00  INFO 37900 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1101 ms
+2026-11-11T16:32:38.058+08:00  INFO 37900 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page: class path resource [static/index.html]
+2026-11-11T16:32:38.369+08:00  INFO 37900 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8082 (http) with context path '/'
+2026-11-11T16:32:38.382+08:00  INFO 37900 --- [main] org.sqlagent.SqlAgentApplication         : Started SqlAgentApplication in 2.474 seconds (process running for 2.905)
+2026-11-11T16:32:38.463+08:00  INFO 37900 --- [http-nio-8082-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-11-11T16:32:38.464+08:00  INFO 37900 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-11-11T16:32:38.466+08:00  INFO 37900 --- [http-nio-8082-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-11-11T16:32:38.587+08:00  INFO 37900 --- [http-nio-8082-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-11-11T16:32:39.742+08:00  INFO 37900 --- [http-nio-8082-exec-1] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: ccc60575-ec94-4d72-84fb-51f068c58cb5
+2026-11-11T16:32:39.747+08:00  INFO 37900 --- [http-nio-8082-exec-1] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-11-11T16:32:55.832+08:00  INFO 37900 --- [http-nio-8082-exec-1] org.sqlagent.service.OllamaAiService     : Ollama 原始返回: {model=qwen2.5:3b, created_at=2026-11-11T08:32:55.7835714Z, response=1. 客户总数是多少？
+2. 最活跃的客户来自哪些城市？
+3. 每个会员级别的客户数量是多少？
+4. 过去一周内新增的客户数量？
+5. 平均每个客户的购买次数是多少？
+6. 最大的库存安全量是多少？
+7. 平均库存量是多少？
+8. 最畅销的产品是什么？
+9. 有哪些渠道为新客户提供优惠？
+10. 每个产品的平均销售价格是多少？
+11. 会员级别为“高级”的客户数量占比是多少？
+12. 哪个渠道带来新客户的数量最多？
+13. 有哪些客户的注册时间在3月？
+14. 每种产品的库存量是多少？
+15. 最低的库存安全量是多少？
+16. 有哪些客户的购买次数超过10次？
+17. 最低的购买量是多少？
+18. 每个客户的平均消费金额是多少？
+19. 有哪些客户的购买金额超过1000元？
+20. 最低的购买价格是多少？, done=true, done_reason=stop, context=[151644, 8948, 198, 2610, 525, 1207, 16948, 11, 3465, 553, 54364, 14817, 13, 1446, 525, 264, 10950, 17847, 13, 151645, 198, 151644, 872, 198, 56568, 110124, 111540, 102659, 1773, 871, 100345, 74393, 8632, 3837, 871, 43959, 17, 15, 18947, 108543, 100386, 100162, 5373, 319, 31235, 102410, 99250, 103923, 99653, 107666, 103936, 1773, 871, 101882, 5122, 871, 16, 13, 85658, 104811, 319, 17, 13, 220, 86119, 98237, 99534, 319, 18, 13, 50042, 100006, 101041, 72651, 75117, 319, 19, 13, 86009, 30534, 43959, 6688, 319, 20, 13, 6567, 107, 237, 22243, 111720, 319, 21, 13, 55616, 17, 15, 38989, 871, 5988, 12539, 31980, 2556, 25, 6310, 198, 13965, 510, 12, 3283, 198, 12, 6002, 842, 198, 12, 6002, 1269, 198, 12, 9825, 198, 12, 4462, 8274, 198, 12, 4161, 3009, 198, 12, 2530, 14571, 271, 2556, 25, 15444, 198, 13965, 510, 12, 1537, 8882, 3009, 198, 12, 1985, 842, 198, 12, 7149, 30541, 198, 12, 5591, 32097, 271, 2556, 25, 34713, 198, 13965, 510, 12, 451, 271, 2556, 25, 10163, 198, 13965, 510, 12, 1855, 3009, 198, 12, 6002, 842, 198, 12, 11089, 13471, 198, 12, 1973, 13471, 198, 12, 1973, 842, 198, 12, 1973, 4773, 198, 12, 8160, 13471, 198, 12, 8160, 9032, 198, 12, 1985, 842, 198, 12, 12194, 198, 12, 4982, 9040, 271, 2556, 25, 3871, 198, 13965, 510, 12, 6741, 1269, 198, 12, 5582, 1269, 198, 12, 1985, 842, 198, 12, 1985, 1269, 198, 12, 2639, 198, 12, 4982, 9040, 271, 319, 151645, 198, 151644, 77091, 198, 16, 13, 41479, 95, 17523, 107737, 111558, 94432, 17, 13, 82539, 105266, 9370, 100017, 101919, 102224, 99490, 94432, 18, 13, 6567, 107, 237, 18947, 102129, 111421, 100017, 81800, 111558, 94432, 19, 13, 32181, 229, 85336, 105309, 31843, 93620, 9370, 100017, 81800, 94432, 20, 13, 74577, 111, 99472, 103991, 107069, 103946, 106641, 111558, 94432, 21, 13, 82539, 99750, 105055, 99464, 32757, 111558, 94432, 22, 13, 74577, 111, 99472, 105055, 32757, 111558, 94432, 23, 13, 82539, 112338, 104310, 102021, 94432, 24, 13, 220, 104719, 101993, 17714, 16628, 108064, 102289, 94432, 16, 15, 13, 6567, 107, 237, 18947, 104703, 101200, 100352, 97480, 111558, 94432, 16, 16, 13, 220, 102129, 105972, 17714, 2073, 104112, 97907, 100017, 81800, 104955, 111558, 94432, 16, 17, 13, 4891, 241, 103, 18947, 101993, 100393, 16628, 107069, 81800, 102538, 94432, 16, 18, 13, 220, 104719, 107069, 61689, 20450, 18493, 18, 9754, 94432, 16, 19, 13, 6567, 107, 237, 86402, 104703, 105055, 32757, 111558, 94432, 16, 20, 13, 82539, 99285, 9370, 105055, 99464, 32757, 111558, 94432, 16, 21, 13, 220, 104719, 107069, 103946, 106641, 100381, 16, 15, 32571, 94432, 16, 22, 13, 82539, 99285, 9370, 103946, 32757, 111558, 94432, 16, 23, 13, 6567, 107, 237, 18947, 107069, 101200, 100030, 80094, 111558, 94432, 16, 24, 13, 220, 104719, 107069, 103946, 80094, 100381, 16, 15, 15, 15, 23305, 94432, 17, 15, 13, 82539, 99285, 9370, 103946, 97480, 111558, 11319], total_duration=15623066000, load_duration=59176100, prompt_eval_count=249, prompt_eval_cached_count=248, prompt_eval_duration=106150000, eval_count=227, eval_duration=15414645000}
+2026-11-11T16:37:05.852+08:00  INFO 37900 --- [http-nio-8082-exec-10] org.sqlagent.service.OllamaAiService     : 生成 SQL Prompt: You are a Microsoft SQL Server expert.
+
+Generate SQL Server SQL only.
+
+Rules:
+1. Use TOP instead of LIMIT.
+2. Use GETDATE() instead of CURDATE().
+3. Use DATEADD() instead of DATE_SUB().
+4. Return SQL only.
+5. Do not explain.
+6. Do not use markdown.
+7. Do not use code blocks.
+8. Never generate DELETE UPDATE INSERT DROP.
+
+You MUST use ONLY the tables and columns listed below.
+
+Do NOT invent tables.
+Do NOT invent columns.
+
+If a column does not exist in schema,
+do not use it.
+
+Database Schema:
+
+Table: customers
+Columns:
+- city
+- customer_id
+- customer_name
+- gender
+- member_level
+- register_time
+- source_channel
+
+Table: inventory
+Columns:
+- last_update_time
+- product_id
+- safety_stock
+- stock_quantity
+
+Table: Numbers
+Columns:
+- N
+
+Table: orders
+Columns:
+- create_time
+- customer_id
+- discount_amount
+- order_amount
+- order_id
+- order_status
+- payment_amount
+- payment_method
+- product_id
+- quantity
+- unit_price
+
+Table: products
+Columns:
+- brand_name
+- category_name
+- product_id
+- product_name
+- status
+- unit_price
+
+
+
+User Question:
+
+1. 客户总数是多少？
+2026-11-11T16:37:07.010+08:00  INFO 37900 --- [http-nio-8082-exec-10] org.sqlagent.service.OllamaAiService     : Ollama 原始返回: {model=qwen2.5:3b, created_at=2026-11-11T08:37:07.0007259Z, response=SELECT COUNT(customer_id) AS customer_count
+FROM customers, done=true, done_reason=stop, context=[151644, 8948, 198, 2610, 525, 1207, 16948, 11, 3465, 553, 54364, 14817, 13, 1446, 525, 264, 10950, 17847, 13, 151645, 198, 151644, 872, 198, 2610, 525, 264, 5100, 7870, 8422, 6203, 17825, 31115, 7870, 8422, 7870, 1172, 17825, 26008, 2834, 16, 13, 5443, 25012, 4518, 315, 10376, 3224, 17, 13, 5443, 7890, 7097, 368, 4518, 315, 18548, 7097, 1005, 319, 18, 13, 5443, 28543, 15665, 368, 4518, 315, 28543, 17282, 1005, 319, 19, 13, 3411, 7870, 1172, 3224, 20, 13, 3155, 537, 10339, 3224, 21, 13, 3155, 537, 990, 50494, 3224, 22, 13, 3155, 537, 990, 2038, 10010, 3224, 23, 13, 14695, 6923, 17197, 22893, 39518, 56942, 17825, 2610, 27732, 990, 26687, 279, 12632, 323, 8147, 10007, 3685, 17825, 5404, 4183, 17023, 12632, 3224, 5404, 4183, 17023, 8147, 17825, 2679, 264, 3250, 1558, 537, 3000, 304, 10802, 1871, 2982, 537, 990, 432, 17825, 5988, 12539, 31980, 2556, 25, 6310, 198, 13965, 510, 12, 3283, 198, 12, 6002, 842, 198, 12, 6002, 1269, 198, 12, 9825, 198, 12, 4462, 8274, 198, 12, 4161, 3009, 198, 12, 2530, 14571, 271, 2556, 25, 15444, 198, 13965, 510, 12, 1537, 8882, 3009, 198, 12, 1985, 842, 198, 12, 7149, 30541, 198, 12, 5591, 32097, 271, 2556, 25, 34713, 198, 13965, 510, 12, 451, 271, 2556, 25, 10163, 198, 13965, 510, 12, 1855, 3009, 198, 12, 6002, 842, 198, 12, 11089, 13471, 198, 12, 1973, 13471, 198, 12, 1973, 842, 198, 12, 1973, 4773, 198, 12, 8160, 13471, 198, 12, 8160, 9032, 198, 12, 1985, 842, 198, 12, 12194, 198, 12, 4982, 9040, 271, 2556, 25, 3871, 198, 13965, 510, 12, 6741, 1269, 198, 12, 5582, 1269, 198, 12, 1985, 842, 198, 12, 1985, 1269, 198, 12, 2639, 198, 12, 4982, 9040, 271, 871, 1474, 15846, 31980, 16, 13, 41479, 95, 17523, 107737, 111558, 11319, 151645, 198, 151644, 77091, 198, 4858, 23989, 39321, 842, 8, 5752, 6002, 3180, 198, 30093, 6310], total_duration=1122192400, load_duration=35893000, prompt_eval_count=305, prompt_eval_cached_count=297, prompt_eval_duration=281904000, eval_count=12, eval_duration=754913000}
+2026-11-11T16:37:14.464+08:00  INFO 37900 --- [http-nio-8082-exec-5] org.sqlagent.service.OllamaAiService     : 生成 SQL Prompt: You are a Microsoft SQL Server expert.
+
+Generate SQL Server SQL only.
+
+Rules:
+1. Use TOP instead of LIMIT.
+2. Use GETDATE() instead of CURDATE().
+3. Use DATEADD() instead of DATE_SUB().
+4. Return SQL only.
+5. Do not explain.
+6. Do not use markdown.
+7. Do not use code blocks.
+8. Never generate DELETE UPDATE INSERT DROP.
+
+You MUST use ONLY the tables and columns listed below.
+
+Do NOT invent tables.
+Do NOT invent columns.
+
+If a column does not exist in schema,
+do not use it.
+
+Database Schema:
+
+Table: customers
+Columns:
+- city
+- customer_id
+- customer_name
+- gender
+- member_level
+- register_time
+- source_channel
+
+Table: inventory
+Columns:
+- last_update_time
+- product_id
+- safety_stock
+- stock_quantity
+
+Table: Numbers
+Columns:
+- N
+
+Table: orders
+Columns:
+- create_time
+- customer_id
+- discount_amount
+- order_amount
+- order_id
+- order_status
+- payment_amount
+- payment_method
+- product_id
+- quantity
+- unit_price
+
+Table: products
+Columns:
+- brand_name
+- category_name
+- product_id
+- product_name
+- status
+- unit_price
+
+
+
+User Question:
+
+7. 平均库存量是多少？
+2026-11-11T16:37:15.701+08:00  INFO 37900 --- [http-nio-8082-exec-5] org.sqlagent.service.OllamaAiService     : Ollama 原始返回: {model=qwen2.5:3b, created_at=2026-11-11T08:37:15.6959555Z, response=(SELECT AVG(stock_quantity) AS average_stock FROM inventory), done=true, done_reason=stop, context=[151644, 8948, 198, 2610, 525, 1207, 16948, 11, 3465, 553, 54364, 14817, 13, 1446, 525, 264, 10950, 17847, 13, 151645, 198, 151644, 872, 198, 2610, 525, 264, 5100, 7870, 8422, 6203, 17825, 31115, 7870, 8422, 7870, 1172, 17825, 26008, 2834, 16, 13, 5443, 25012, 4518, 315, 10376, 3224, 17, 13, 5443, 7890, 7097, 368, 4518, 315, 18548, 7097, 1005, 319, 18, 13, 5443, 28543, 15665, 368, 4518, 315, 28543, 17282, 1005, 319, 19, 13, 3411, 7870, 1172, 3224, 20, 13, 3155, 537, 10339, 3224, 21, 13, 3155, 537, 990, 50494, 3224, 22, 13, 3155, 537, 990, 2038, 10010, 3224, 23, 13, 14695, 6923, 17197, 22893, 39518, 56942, 17825, 2610, 27732, 990, 26687, 279, 12632, 323, 8147, 10007, 3685, 17825, 5404, 4183, 17023, 12632, 3224, 5404, 4183, 17023, 8147, 17825, 2679, 264, 3250, 1558, 537, 3000, 304, 10802, 1871, 2982, 537, 990, 432, 17825, 5988, 12539, 31980, 2556, 25, 6310, 198, 13965, 510, 12, 3283, 198, 12, 6002, 842, 198, 12, 6002, 1269, 198, 12, 9825, 198, 12, 4462, 8274, 198, 12, 4161, 3009, 198, 12, 2530, 14571, 271, 2556, 25, 15444, 198, 13965, 510, 12, 1537, 8882, 3009, 198, 12, 1985, 842, 198, 12, 7149, 30541, 198, 12, 5591, 32097, 271, 2556, 25, 34713, 198, 13965, 510, 12, 451, 271, 2556, 25, 10163, 198, 13965, 510, 12, 1855, 3009, 198, 12, 6002, 842, 198, 12, 11089, 13471, 198, 12, 1973, 13471, 198, 12, 1973, 842, 198, 12, 1973, 4773, 198, 12, 8160, 13471, 198, 12, 8160, 9032, 198, 12, 1985, 842, 198, 12, 12194, 198, 12, 4982, 9040, 271, 2556, 25, 3871, 198, 13965, 510, 12, 6741, 1269, 198, 12, 5582, 1269, 198, 12, 1985, 842, 198, 12, 1985, 1269, 198, 12, 2639, 198, 12, 4982, 9040, 271, 871, 1474, 15846, 31980, 22, 13, 74577, 111, 99472, 105055, 32757, 111558, 11319, 151645, 198, 151644, 77091, 198, 86620, 70414, 67471, 32097, 8, 5752, 5461, 30541, 4295, 15444, 8], total_duration=1226348600, load_duration=39360400, prompt_eval_count=306, prompt_eval_cached_count=292, prompt_eval_duration=397674000, eval_count=12, eval_duration=753782000}
+2026-11-11T16:37:36.176+08:00  INFO 37900 --- [http-nio-8082-exec-6] org.sqlagent.service.OllamaAiService     : 生成 SQL Prompt: You are a Microsoft SQL Server expert.
+
+Generate SQL Server SQL only.
+
+Rules:
+1. Use TOP instead of LIMIT.
+2. Use GETDATE() instead of CURDATE().
+3. Use DATEADD() instead of DATE_SUB().
+4. Return SQL only.
+5. Do not explain.
+6. Do not use markdown.
+7. Do not use code blocks.
+8. Never generate DELETE UPDATE INSERT DROP.
+
+You MUST use ONLY the tables and columns listed below.
+
+Do NOT invent tables.
+Do NOT invent columns.
+
+If a column does not exist in schema,
+do not use it.
+
+Database Schema:
+
+Table: customers
+Columns:
+- city
+- customer_id
+- customer_name
+- gender
+- member_level
+- register_time
+- source_channel
+
+Table: inventory
+Columns:
+- last_update_time
+- product_id
+- safety_stock
+- stock_quantity
+
+Table: Numbers
+Columns:
+- N
+
+Table: orders
+Columns:
+- create_time
+- customer_id
+- discount_amount
+- order_amount
+- order_id
+- order_status
+- payment_amount
+- payment_method
+- product_id
+- quantity
+- unit_price
+
+Table: products
+Columns:
+- brand_name
+- category_name
+- product_id
+- product_name
+- status
+- unit_price
+
+
+
+User Question:
+
+16. 有哪些客户的购买次数超过10次？
+2026-11-11T16:37:40.525+08:00  INFO 37900 --- [http-nio-8082-exec-6] org.sqlagent.service.OllamaAiService     : Ollama 原始返回: {model=qwen2.5:3b, created_at=2026-11-11T08:37:40.5191303Z, response=SELECT c.customer_name
+FROM customers c
+JOIN (
+    SELECT o.customer_id, COUNT(*) AS order_count
+    FROM orders o
+    GROUP BY o.customer_id
+    HAVING COUNT(o.order_id) > 10
+) o ON c.customer_id = o.customer_id, done=true, done_reason=stop, context=[151644, 8948, 198, 2610, 525, 1207, 16948, 11, 3465, 553, 54364, 14817, 13, 1446, 525, 264, 10950, 17847, 13, 151645, 198, 151644, 872, 198, 2610, 525, 264, 5100, 7870, 8422, 6203, 17825, 31115, 7870, 8422, 7870, 1172, 17825, 26008, 2834, 16, 13, 5443, 25012, 4518, 315, 10376, 3224, 17, 13, 5443, 7890, 7097, 368, 4518, 315, 18548, 7097, 1005, 319, 18, 13, 5443, 28543, 15665, 368, 4518, 315, 28543, 17282, 1005, 319, 19, 13, 3411, 7870, 1172, 3224, 20, 13, 3155, 537, 10339, 3224, 21, 13, 3155, 537, 990, 50494, 3224, 22, 13, 3155, 537, 990, 2038, 10010, 3224, 23, 13, 14695, 6923, 17197, 22893, 39518, 56942, 17825, 2610, 27732, 990, 26687, 279, 12632, 323, 8147, 10007, 3685, 17825, 5404, 4183, 17023, 12632, 3224, 5404, 4183, 17023, 8147, 17825, 2679, 264, 3250, 1558, 537, 3000, 304, 10802, 1871, 2982, 537, 990, 432, 17825, 5988, 12539, 31980, 2556, 25, 6310, 198, 13965, 510, 12, 3283, 198, 12, 6002, 842, 198, 12, 6002, 1269, 198, 12, 9825, 198, 12, 4462, 8274, 198, 12, 4161, 3009, 198, 12, 2530, 14571, 271, 2556, 25, 15444, 198, 13965, 510, 12, 1537, 8882, 3009, 198, 12, 1985, 842, 198, 12, 7149, 30541, 198, 12, 5591, 32097, 271, 2556, 25, 34713, 198, 13965, 510, 12, 451, 271, 2556, 25, 10163, 198, 13965, 510, 12, 1855, 3009, 198, 12, 6002, 842, 198, 12, 11089, 13471, 198, 12, 1973, 13471, 198, 12, 1973, 842, 198, 12, 1973, 4773, 198, 12, 8160, 13471, 198, 12, 8160, 9032, 198, 12, 1985, 842, 198, 12, 12194, 198, 12, 4982, 9040, 271, 2556, 25, 3871, 198, 13965, 510, 12, 6741, 1269, 198, 12, 5582, 1269, 198, 12, 1985, 842, 198, 12, 1985, 1269, 198, 12, 2639, 198, 12, 4982, 9040, 271, 871, 1474, 15846, 31980, 16, 21, 13, 220, 104719, 107069, 103946, 106641, 100381, 16, 15, 32571, 11319, 151645, 198, 151644, 77091, 198, 4858, 272, 31780, 1269, 198, 30093, 6310, 272, 198, 75486, 2399, 262, 19094, 297, 31780, 842, 11, 23989, 28671, 5752, 1973, 3180, 198, 262, 4295, 10163, 297, 198, 262, 26870, 7710, 297, 31780, 842, 198, 262, 472, 83722, 23989, 10108, 14041, 842, 8, 861, 220, 16, 15, 198, 8, 297, 6197, 272, 31780, 842, 284, 297, 31780, 842], total_duration=4321123700, load_duration=35919900, prompt_eval_count=310, prompt_eval_cached_count=292, prompt_eval_duration=460914000, eval_count=59, eval_duration=3789358000}
+2026-11-11T16:37:56.739+08:00  INFO 37900 --- [http-nio-8082-exec-7] org.sqlagent.service.OllamaAiService     : 生成 SQL Prompt: You are a Microsoft SQL Server expert.
+
+Generate SQL Server SQL only.
+
+Rules:
+1. Use TOP instead of LIMIT.
+2. Use GETDATE() instead of CURDATE().
+3. Use DATEADD() instead of DATE_SUB().
+4. Return SQL only.
+5. Do not explain.
+6. Do not use markdown.
+7. Do not use code blocks.
+8. Never generate DELETE UPDATE INSERT DROP.
+
+You MUST use ONLY the tables and columns listed below.
+
+Do NOT invent tables.
+Do NOT invent columns.
+
+If a column does not exist in schema,
+do not use it.
+
+Database Schema:
+
+Table: customers
+Columns:
+- city
+- customer_id
+- customer_name
+- gender
+- member_level
+- register_time
+- source_channel
+
+Table: inventory
+Columns:
+- last_update_time
+- product_id
+- safety_stock
+- stock_quantity
+
+Table: Numbers
+Columns:
+- N
+
+Table: orders
+Columns:
+- create_time
+- customer_id
+- discount_amount
+- order_amount
+- order_id
+- order_status
+- payment_amount
+- payment_method
+- product_id
+- quantity
+- unit_price
+
+Table: products
+Columns:
+- brand_name
+- category_name
+- product_id
+- product_name
+- status
+- unit_price
+
+
+
+User Question:
+
+16. 有哪些客户的购买次数超过10次？
+2026-11-11T16:38:28.046+08:00  INFO 37900 --- [http-nio-8082-exec-8] org.sqlagent.service.OllamaAiService     : 生成 SQL Prompt: You are a Microsoft SQL Server expert.
+
+Generate SQL Server SQL only.
+
+Rules:
+1. Use TOP instead of LIMIT.
+2. Use GETDATE() instead of CURDATE().
+3. Use DATEADD() instead of DATE_SUB().
+4. Return SQL only.
+5. Do not explain.
+6. Do not use markdown.
+7. Do not use code blocks.
+8. Never generate DELETE UPDATE INSERT DROP.
+
+You MUST use ONLY the tables and columns listed below.
+
+Do NOT invent tables.
+Do NOT invent columns.
+
+If a column does not exist in schema,
+do not use it.
+
+Database Schema:
+
+Table: customers
+Columns:
+- city
+- customer_id
+- customer_name
+- gender
+- member_level
+- register_time
+- source_channel
+
+Table: inventory
+Columns:
+- last_update_time
+- product_id
+- safety_stock
+- stock_quantity
+
+Table: Numbers
+Columns:
+- N
+
+Table: orders
+Columns:
+- create_time
+- customer_id
+- discount_amount
+- order_amount
+- order_id
+- order_status
+- payment_amount
+- payment_method
+- product_id
+- quantity
+- unit_price
+
+Table: products
+Columns:
+- brand_name
+- category_name
+- product_id
+- product_name
+- status
+- unit_price
+
+
+
+User Question:
+
+16. 有哪些客户的购买次数超过10次？
+2026-11-11T16:38:29.272+08:00  INFO 37900 --- [http-nio-8082-exec-7] org.sqlagent.service.OllamaAiService     : Ollama 原始返回: {model=qwen2.5:3b, created_at=2026-11-11T08:38:29.2664077Z, response=SELECT customer_id, COUNT(order_id) AS order_count
+FROM orders
+WHERE customer_id IN (
+    SELECT customer_id
+    FROM orders
+    GROUP BY customer_id
+    HAVING COUNT(order_id) > 10
+)
+GROUP BY customer_id
+HAVING COUNT(order_id) > 10;, done=true, done_reason=stop, context=[151644, 8948, 198, 2610, 525, 1207, 16948, 11, 3465, 553, 54364, 14817, 13, 1446, 525, 264, 10950, 17847, 13, 151645, 198, 151644, 872, 198, 2610, 525, 264, 5100, 7870, 8422, 6203, 17825, 31115, 7870, 8422, 7870, 1172, 17825, 26008, 2834, 16, 13, 5443, 25012, 4518, 315, 10376, 3224, 17, 13, 5443, 7890, 7097, 368, 4518, 315, 18548, 7097, 1005, 319, 18, 13, 5443, 28543, 15665, 368, 4518, 315, 28543, 17282, 1005, 319, 19, 13, 3411, 7870, 1172, 3224, 20, 13, 3155, 537, 10339, 3224, 21, 13, 3155, 537, 990, 50494, 3224, 22, 13, 3155, 537, 990, 2038, 10010, 3224, 23, 13, 14695, 6923, 17197, 22893, 39518, 56942, 17825, 2610, 27732, 990, 26687, 279, 12632, 323, 8147, 10007, 3685, 17825, 5404, 4183, 17023, 12632, 3224, 5404, 4183, 17023, 8147, 17825, 2679, 264, 3250, 1558, 537, 3000, 304, 10802, 1871, 2982, 537, 990, 432, 17825, 5988, 12539, 31980, 2556, 25, 6310, 198, 13965, 510, 12, 3283, 198, 12, 6002, 842, 198, 12, 6002, 1269, 198, 12, 9825, 198, 12, 4462, 8274, 198, 12, 4161, 3009, 198, 12, 2530, 14571, 271, 2556, 25, 15444, 198, 13965, 510, 12, 1537, 8882, 3009, 198, 12, 1985, 842, 198, 12, 7149, 30541, 198, 12, 5591, 32097, 271, 2556, 25, 34713, 198, 13965, 510, 12, 451, 271, 2556, 25, 10163, 198, 13965, 510, 12, 1855, 3009, 198, 12, 6002, 842, 198, 12, 11089, 13471, 198, 12, 1973, 13471, 198, 12, 1973, 842, 198, 12, 1973, 4773, 198, 12, 8160, 13471, 198, 12, 8160, 9032, 198, 12, 1985, 842, 198, 12, 12194, 198, 12, 4982, 9040, 271, 2556, 25, 3871, 198, 13965, 510, 12, 6741, 1269, 198, 12, 5582, 1269, 198, 12, 1985, 842, 198, 12, 1985, 1269, 198, 12, 2639, 198, 12, 4982, 9040, 271, 871, 1474, 15846, 31980, 16, 21, 13, 220, 104719, 107069, 103946, 106641, 100381, 16, 15, 32571, 11319, 151645, 198, 151644, 77091, 198, 4858, 6002, 842, 11, 23989, 19385, 842, 8, 5752, 1973, 3180, 198, 30093, 10163, 198, 26513, 6002, 842, 1964, 2399, 262, 19094, 6002, 842, 198, 262, 4295, 10163, 198, 262, 26870, 7710, 6002, 842, 198, 262, 472, 83722, 23989, 19385, 842, 8, 861, 220, 16, 15, 198, 340, 41480, 7710, 6002, 842, 198, 72239, 1718, 23989, 19385, 842, 8, 861, 220, 16, 15, 26], total_duration=32513464000, load_duration=12665400, prompt_eval_count=310, prompt_eval_cached_count=309, prompt_eval_duration=67725000, eval_count=65, eval_duration=4237019000}
+2026-11-11T16:38:31.765+08:00  INFO 37900 --- [http-nio-8082-exec-8] org.sqlagent.service.OllamaAiService     : Ollama 原始返回: {model=qwen2.5:3b, created_at=2026-11-11T08:38:31.7587581Z, response=SELECT customer_id, customer_name, COUNT(order_id) AS purchase_count
+FROM orders
+GROUP BY customer_id, customer_name
+HAVING COUNT(order_id) > 10, done=true, done_reason=stop, context=[151644, 8948, 198, 2610, 525, 1207, 16948, 11, 3465, 553, 54364, 14817, 13, 1446, 525, 264, 10950, 17847, 13, 151645, 198, 151644, 872, 198, 2610, 525, 264, 5100, 7870, 8422, 6203, 17825, 31115, 7870, 8422, 7870, 1172, 17825, 26008, 2834, 16, 13, 5443, 25012, 4518, 315, 10376, 3224, 17, 13, 5443, 7890, 7097, 368, 4518, 315, 18548, 7097, 1005, 319, 18, 13, 5443, 28543, 15665, 368, 4518, 315, 28543, 17282, 1005, 319, 19, 13, 3411, 7870, 1172, 3224, 20, 13, 3155, 537, 10339, 3224, 21, 13, 3155, 537, 990, 50494, 3224, 22, 13, 3155, 537, 990, 2038, 10010, 3224, 23, 13, 14695, 6923, 17197, 22893, 39518, 56942, 17825, 2610, 27732, 990, 26687, 279, 12632, 323, 8147, 10007, 3685, 17825, 5404, 4183, 17023, 12632, 3224, 5404, 4183, 17023, 8147, 17825, 2679, 264, 3250, 1558, 537, 3000, 304, 10802, 1871, 2982, 537, 990, 432, 17825, 5988, 12539, 31980, 2556, 25, 6310, 198, 13965, 510, 12, 3283, 198, 12, 6002, 842, 198, 12, 6002, 1269, 198, 12, 9825, 198, 12, 4462, 8274, 198, 12, 4161, 3009, 198, 12, 2530, 14571, 271, 2556, 25, 15444, 198, 13965, 510, 12, 1537, 8882, 3009, 198, 12, 1985, 842, 198, 12, 7149, 30541, 198, 12, 5591, 32097, 271, 2556, 25, 34713, 198, 13965, 510, 12, 451, 271, 2556, 25, 10163, 198, 13965, 510, 12, 1855, 3009, 198, 12, 6002, 842, 198, 12, 11089, 13471, 198, 12, 1973, 13471, 198, 12, 1973, 842, 198, 12, 1973, 4773, 198, 12, 8160, 13471, 198, 12, 8160, 9032, 198, 12, 1985, 842, 198, 12, 12194, 198, 12, 4982, 9040, 271, 2556, 25, 3871, 198, 13965, 510, 12, 6741, 1269, 198, 12, 5582, 1269, 198, 12, 1985, 842, 198, 12, 1985, 1269, 198, 12, 2639, 198, 12, 4982, 9040, 271, 871, 1474, 15846, 31980, 16, 21, 13, 220, 104719, 107069, 103946, 106641, 100381, 16, 15, 32571, 11319, 151645, 198, 151644, 77091, 198, 4858, 6002, 842, 11, 6002, 1269, 11, 23989, 19385, 842, 8, 5752, 7627, 3180, 198, 30093, 10163, 198, 41480, 7710, 6002, 842, 11, 6002, 1269, 198, 72239, 1718, 23989, 19385, 842, 8, 861, 220, 16, 15], total_duration=3699452900, load_duration=18927700, prompt_eval_count=310, prompt_eval_cached_count=309, prompt_eval_duration=65766000, eval_count=37, eval_duration=2415096000}
