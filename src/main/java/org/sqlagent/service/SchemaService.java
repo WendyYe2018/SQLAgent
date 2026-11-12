@@ -22,8 +22,7 @@ public class SchemaService {
 
     @Cacheable(value = "schema", key = "'database-schema'")
     public String getSchema() {
-
-        String sql = """
+        String schemaSql = """
                 SELECT
                     TABLE_NAME,
                     COLUMN_NAME
@@ -32,16 +31,12 @@ public class SchemaService {
                 """;
 
         try {
-            List<Map<String,Object>> rows =
-                    jdbcTemplate.queryForList(sql);
-
-            Map<String,List<String>> tables =
-                    new LinkedHashMap<>();
+            List<Map<String,Object>> rows = jdbcTemplate.queryForList(schemaSql);
+            Map<String,List<String>> tables = new LinkedHashMap<>();
 
             for (Map<String,Object> row : rows) {
                 String table = row.get("TABLE_NAME").toString();
                 String column = row.get("COLUMN_NAME").toString();
-
                 tables.computeIfAbsent(table, k -> new ArrayList<>()).add(column);
             }
 
@@ -58,6 +53,12 @@ public class SchemaService {
                     schema.append("- ")
                             .append(column)
                             .append("\n");
+                }
+
+                String relationships = getTableRelationships(tableName);
+                if (!relationships.isBlank()) {
+                    schema.append("Relationships:\n");
+                    schema.append(relationships);
                 }
 
                 schema.append("Sample rows (top 10):\n");
@@ -77,8 +78,43 @@ public class SchemaService {
 
             return schema.toString();
         } catch (Exception e) {
-            log.error("查询数据库 schema 失败: {}", sql, e);
+            log.error("查询数据库 schema 失败: {}", schemaSql, e);
             throw e;
+        }
+    }
+
+    public String getTableRelationships(String tableName) {
+        String sql = """
+                SELECT
+                    OBJECT_NAME(fkc.parent_object_id) AS table_name,
+                    COL_NAME(fkc.parent_object_id, fkc.parent_column_id) AS column_name,
+                    OBJECT_NAME(fkc.referenced_object_id) AS referenced_table_name,
+                    COL_NAME(fkc.referenced_object_id, fkc.referenced_column_id) AS referenced_column_name
+                FROM sys.foreign_key_columns fkc
+                WHERE OBJECT_NAME(fkc.parent_object_id) = ?
+                ORDER BY COL_NAME(fkc.parent_object_id, fkc.parent_column_id)
+                """;
+
+        try {
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, tableName);
+            if (rows.isEmpty()) {
+                return "- no foreign keys\n";
+            }
+
+            StringBuilder builder = new StringBuilder();
+            for (Map<String, Object> row : rows) {
+                builder.append("- ")
+                        .append(row.get("column_name"))
+                        .append(" -> ")
+                        .append(row.get("referenced_table_name"))
+                        .append(".")
+                        .append(row.get("referenced_column_name"))
+                        .append("\n");
+            }
+            return builder.toString();
+        } catch (Exception e) {
+            log.warn("读取外键关系失败，table={}", tableName, e);
+            return "- no foreign keys\n";
         }
     }
 

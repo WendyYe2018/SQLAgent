@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.sqlagent.util.SqlCleaner;
 import org.sqlagent.util.SqlValidator;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +32,9 @@ public class OllamaAiService {
 
     @Autowired
     SqlService sqlService;
+
+    @Autowired
+    AgentExecutionLogService agentExecutionLogService;
 
     public String generateSql(String question) {
         return generateSql(question, null, null);
@@ -58,23 +63,42 @@ public class OllamaAiService {
     public Map<String, Object> queryWithRetry(String question) {
         String sql = null;
         String lastError = null;
+        List<Map<String, Object>> attempts = new ArrayList<>();
 
         for (int i = 0; i < 3; i++) {
-            sql = generateSql(question, sql, lastError);
             try {
+                sql = generateSql(question, sql, lastError);
                 SqlValidator.validate(sql);
                 List<Map<String, Object>> data = sqlService.execute(sql);
                 Map<String, Object> result = new HashMap<>();
+                result.put("status", "success");
                 result.put("sql", sql);
                 result.put("data", data);
+                agentExecutionLogService.recordSuccess(question, sql, data, 3, i + 1);
                 return result;
             } catch (Exception e) {
                 lastError = e.getMessage();
+                Map<String, Object> attempt = new HashMap<>();
+                attempt.put("attempt", i + 1);
+                attempt.put("sql", sql);
+                attempt.put("error", lastError);
+                attempts.add(attempt);
                 log.warn("SQL 执行失败，重试第 {} 次，question={}，sql={}，error={}", i + 1, question, sql, lastError);
+                agentExecutionLogService.recordFailure(question, sql, lastError, i + 1, 3);
             }
         }
 
-        throw new RuntimeException("SQL 生成与执行失败，已重试 3 次，最后错误: " + lastError);
+        String finalMessage = "我已经尝试了 3 次 SQL，但仍无法确定业务语义。请确认你要统计的定义，例如“已发货”还是“已完成”，以及对应字段名是什么。";
+        agentExecutionLogService.recordFailure(question, sql, finalMessage, 3, 3);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("status", "needs_clarification");
+        result.put("sql", sql);
+        result.put("data", List.of());
+        result.put("lastAttemptSql", sql);
+        result.put("lastAttemptError", lastError);
+        result.put("clarificationQuestion", finalMessage);
+        return result;
     }
 
     private String callOllama(String prompt) {
@@ -152,6 +176,16 @@ public class OllamaAiService {
         return generateExamples(false);
     }
 
+    @Async("taskExecutor")
+    public void generateExamplesAsync() {
+        try {
+            List<String> refreshed = generateExamples(true);
+            log.info("异步刷新推荐问题完成，数量={}", refreshed.size());
+        } catch (Exception e) {
+            log.error("异步刷新推荐问题失败", e);
+        }
+    }
+
     public List<String> generateExamples(boolean forceRefresh) {
         String schema = schemaService.getSchema();
 
@@ -172,6 +206,7 @@ public class OllamaAiService {
 
     @CacheEvict(value = "example-questions", key = "'default'")
     public void forceRefresh() {
-        log.info("已清空推荐问题缓存");
+        log.info("已清空推荐问题缓存，启动后台线程刷新");
+        generateExamplesAsync();
     }
 }

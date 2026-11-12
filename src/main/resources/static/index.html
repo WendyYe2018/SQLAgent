@@ -221,7 +221,7 @@
        <div class="layout">
            <main class="main">
                <div class="panel">
-                   <textarea id="question" placeholder="请输入问题，例如：统计订单总数"></textarea>
+                   <textarea id="question" placeholder="请输入问题，例如：统计最近30天的订单总数"></textarea>
                    <div class="actions">
                        <button class="primary" onclick="ask()">发送</button>
                    </div>
@@ -254,41 +254,33 @@
     </div>
 
     <script>
-       async function loadExamples(forceRefresh = false) {
-           const container = document.getElementById('examples');
-           container.innerHTML = '<div class="empty">加载中...</div>';
+       const elements = {
+           question: document.getElementById('question'),
+           answer: document.getElementById('answer'),
+           sql: document.getElementById('sql'),
+           tableResult: document.getElementById('table-result'),
+           examples: document.getElementById('examples')
+       };
 
-           try {
-               const url = forceRefresh ? '/api/examples?refresh=true' : '/api/examples';
-               const res = await fetch(url);
-               const list = await res.json();
+       function setEmptyTable() {
+           elements.tableResult.innerHTML = '<div class="empty">暂无数据</div>';
+       }
 
-               if (!list || list.length === 0) {
-                   container.innerHTML = '<div class="empty">暂无推荐问题</div>';
-                   return;
-               }
+       function setAnswer(text) {
+           elements.answer.innerText = text;
+       }
 
-               container.innerHTML = list
-                   .map(item => `
-                       <button class="example-btn" onclick="fillQuestion('${item.replace(/'/g, "\\'")}' )">
-                           ${item}
-                       </button>
-                   `)
-                   .join('');
-           } catch (error) {
-               container.innerHTML = '<div class="empty">推荐问题加载失败</div>';
-           }
+       function setSql(text) {
+           elements.sql.value = text || '';
        }
 
        function fillQuestion(value) {
-           document.getElementById('question').value = value;
+           elements.question.value = value;
        }
 
        function renderTable(rows) {
-           const container = document.getElementById('table-result');
-
            if (!rows || rows.length === 0) {
-               container.innerHTML = '<div class="empty">暂无数据</div>';
+               setEmptyTable();
                return;
            }
 
@@ -311,38 +303,89 @@
            });
 
            html += '</tbody></table>';
-           container.innerHTML = html;
+           elements.tableResult.innerHTML = html;
+       }
+
+       async function loadExamples(forceRefresh = false) {
+           elements.examples.innerHTML = '<div class="empty">加载中...</div>';
+
+           try {
+               const url = forceRefresh ? '/api/examples?refresh=true' : '/api/examples';
+               const response = await fetch(url);
+               const list = await response.json();
+
+               if (!list || list.length === 0) {
+                   elements.examples.innerHTML = '<div class="empty">暂无推荐问题</div>';
+                   return;
+               }
+
+               elements.examples.innerHTML = list
+                   .map(item => {
+                       const safeItem = item.replace(/'/g, "\\'");
+                       return `
+                           <button class="example-btn" onclick="fillQuestion('${safeItem}')">
+                               ${item}
+                           </button>
+                       `;
+                   })
+                   .join('');
+           } catch (error) {
+               elements.examples.innerHTML = '<div class="empty">推荐问题加载失败</div>';
+           }
+       }
+
+       function handleNeedsClarification(data) {
+           const sqlText = data.lastAttemptSql || data.sql || '';
+
+           setSql(sqlText);
+           setAnswer(data.clarificationQuestion || '我已经尝试了 3 次 SQL，但仍需要您确认业务定义。');
+           setEmptyTable();
+       }
+
+       function handleError(data) {
+           setAnswer('❌ ' + (data.error || '查询失败'));
+           setEmptyTable();
        }
 
        async function ask() {
-           const question = document.getElementById('question').value.trim();
+           const question = elements.question.value.trim();
            if (!question) {
-               document.getElementById('answer').innerText = '请输入查询问题';
+               setAnswer('请输入查询问题');
                return;
            }
 
-           const response = await fetch('/api/query', {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/json'
-               },
-               body: JSON.stringify({ question })
-           });
+           try {
+               const response = await fetch('/api/query', {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   },
+                   body: JSON.stringify({ question })
+               });
 
-           const data = await response.json();
-           document.getElementById('sql').value = data.sql || '';
+               const data = await response.json();
 
-           if (data.error) {
-               document.getElementById('answer').innerText = '❌ ' + data.error;
-               document.getElementById('table-result').innerHTML = '<div class="empty">暂无数据</div>';
-               return;
+               if (data.status === 'needs_clarification') {
+                   handleNeedsClarification(data);
+                   return;
+               }
+
+               setSql(data.sql || '');
+
+               if (data.error) {
+                   handleError(data);
+                   return;
+               }
+
+               setAnswer(data.answer || '');
+               renderTable(data.data || []);
+           } catch (error) {
+               setAnswer('❌ 请求失败，请稍后再试');
+               setEmptyTable();
            }
-
-           document.getElementById('answer').innerText = data.answer || '';
-           renderTable(data.data || []);
        }
 
-       window.onload = loadExamples;
+       window.onload = () => loadExamples();
     </script>
 </body>
 

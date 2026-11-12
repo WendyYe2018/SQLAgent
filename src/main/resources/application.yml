@@ -1,12 +1,15 @@
 spring:
   datasource:
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
-    url: jdbc:sqlserver://localhost:1434;databaseName=DataCopilot;encrypt=false
+    url: jdbc:sqlserver://localhost:1434;databaseName=Taobao;encrypt=false
     username: sa
     password: Ywx2018!00000000
 
 server:
-  port: 8082
+  port: 8083
+
+chroma:
+  url: http://127.0.0.1:8000
 
 logging:
   level:
