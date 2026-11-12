@@ -173,25 +173,11 @@ public class OllamaAiService {
 
     @Cacheable(value = "example-questions", key = "'default'")
     public List<String> generateExamples() {
-        return generateExamples(false);
-    }
-
-    @Async("taskExecutor")
-    public void generateExamplesAsync() {
-        try {
-            List<String> refreshed = generateExamples(true);
-            log.info("异步刷新推荐问题完成，数量={}", refreshed.size());
-        } catch (Exception e) {
-            log.error("异步刷新推荐问题失败", e);
-        }
-    }
-
-    public List<String> generateExamples(boolean forceRefresh) {
         String schema = schemaService.getSchema();
 
         String prompt = promptService.loadPrompt("example-questions.txt");
         prompt = prompt.replace("{{schema}}", schema);
-
+        log.info("正在生成推荐问题");
         try {
             String result = callOllama(prompt);
             return Arrays.stream(result.split("\n"))
@@ -202,11 +188,5 @@ public class OllamaAiService {
             log.error("生成推荐问题失败，schema={}", schema, e);
             throw e;
         }
-    }
-
-    @CacheEvict(value = "example-questions", key = "'default'")
-    public void forceRefresh() {
-        log.info("已清空推荐问题缓存，启动后台线程刷新");
-        generateExamplesAsync();
     }
 }

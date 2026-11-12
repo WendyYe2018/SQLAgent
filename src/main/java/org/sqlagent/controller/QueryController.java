@@ -12,16 +12,13 @@ import java.util.Map;
 @RequestMapping("/api")
 public class QueryController {
 
-    private final SqlService sqlService;
     private final OllamaAiService ollamaAiService;
     private final AgentExecutionLogService agentExecutionLogService;
 
     public QueryController(
-            SqlService sqlService,
             OllamaAiService ollamaAiService,
             AgentExecutionLogService agentExecutionLogService) {
 
-        this.sqlService = sqlService;
         this.ollamaAiService = ollamaAiService;
         this.agentExecutionLogService = agentExecutionLogService;
     }
@@ -29,28 +26,8 @@ public class QueryController {
 
     @GetMapping("/examples")
     public List<String> examples(@RequestParam(value = "refresh", required = false, defaultValue = "false") boolean refresh) {
-        if (refresh) {
-            ollamaAiService.forceRefresh();
-            return ollamaAiService.generateExamples();
-        }
-
-        List<String> examples = ollamaAiService.generateExamples();
-        if (examples == null || examples.isEmpty()) {
-            return List.of();
-        }
-        try {
-        // 先生成 examples，然后写入 Chroma 向量库，确保前端展示和向量检索都使用同一批数据。
-            String collectionName = "taobao_questions";
-            if (examples != null && !examples.isEmpty()) {
-                for (int i = 0; i < examples.size(); i++) {
-                    String example = examples.get(i);
-                    ChromaService.upsertQuestionStatic(collectionName, String.valueOf(i + 1), example, Map.of("source", "generated_examples"));
-                }
-            }
-        } catch (Exception e) {
-
-        }
-        return examples;
+        // 推荐问题先按稳定的 Ollama 生成链路走，不再在这里触发异步刷新或写入向量库。
+        return ollamaAiService.generateExamples();
     }
 
     @PostMapping("/query")
