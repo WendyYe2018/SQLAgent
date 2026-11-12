@@ -43,6 +43,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>io.qdrant</groupId>
+            <artifactId>qdrant-client</artifactId>
+            <version>1.11.0</version>
+        </dependency>
+
     </dependencies>
 
 </project>

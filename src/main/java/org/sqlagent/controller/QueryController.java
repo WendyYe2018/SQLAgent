@@ -3,7 +3,9 @@ package org.sqlagent.controller;
 import org.springframework.web.bind.annotation.*;
 import org.sqlagent.dto.QueryRequest;
 import org.sqlagent.dto.QueryResponse;
-import org.sqlagent.service.*;
+import org.sqlagent.service.AgentExecutionLogService;
+import org.sqlagent.service.OllamaAiService;
+import org.sqlagent.service.QdrantService;
 
 import java.util.List;
 import java.util.Map;
@@ -14,13 +16,15 @@ public class QueryController {
 
     private final OllamaAiService ollamaAiService;
     private final AgentExecutionLogService agentExecutionLogService;
+    private final QdrantService qdrantService;
 
     public QueryController(
             OllamaAiService ollamaAiService,
-            AgentExecutionLogService agentExecutionLogService) {
-
+            AgentExecutionLogService agentExecutionLogService,
+            QdrantService qdrantService) {
         this.ollamaAiService = ollamaAiService;
         this.agentExecutionLogService = agentExecutionLogService;
+        this.qdrantService = qdrantService;
     }
 
 
@@ -34,8 +38,7 @@ public class QueryController {
     public QueryResponse query(
             @RequestBody QueryRequest request) {
 
-        QueryResponse response =
-                new QueryResponse();
+        QueryResponse response = new QueryResponse();
         try {
             String question = request.getQuestion();
             Map<String, Object> queryResult = ollamaAiService.queryWithRetry(question);
@@ -54,13 +57,10 @@ public class QueryController {
                 return response;
             }
 
-            String answer =
-                    ollamaAiService.generateAnswer(
-                            question,
-                            data
-                    );
-
+            String answer = ollamaAiService.generateAnswer(question, data);
             response.setAnswer(answer);
+
+            qdrantService.saveUserQueryToVector(question);
 
         } catch (Exception e) {
             response.setAnswer("查询失败");
