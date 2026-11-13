@@ -343,7 +343,7 @@
        }
 
        function handleError(data) {
-           setAnswer('❌ ' + (data.error || '查询失败'));
+           setAnswer('❌ ' + (data.error || '查询失败') + data.lastAttemptError);
            setEmptyTable();
        }
 

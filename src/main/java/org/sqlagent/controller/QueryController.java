@@ -5,7 +5,6 @@ import org.sqlagent.dto.QueryRequest;
 import org.sqlagent.dto.QueryResponse;
 import org.sqlagent.service.AgentExecutionLogService;
 import org.sqlagent.service.OllamaAiService;
-import org.sqlagent.service.QdrantService;
 
 import java.util.List;
 import java.util.Map;
@@ -16,15 +15,12 @@ public class QueryController {
 
     private final OllamaAiService ollamaAiService;
     private final AgentExecutionLogService agentExecutionLogService;
-    private final QdrantService qdrantService;
 
     public QueryController(
             OllamaAiService ollamaAiService,
-            AgentExecutionLogService agentExecutionLogService,
-            QdrantService qdrantService) {
+            AgentExecutionLogService agentExecutionLogService) {
         this.ollamaAiService = ollamaAiService;
         this.agentExecutionLogService = agentExecutionLogService;
-        this.qdrantService = qdrantService;
     }
 
 
@@ -59,8 +55,6 @@ public class QueryController {
 
             String answer = ollamaAiService.generateAnswer(question, data);
             response.setAnswer(answer);
-
-            qdrantService.saveUserQueryToVector(question);
 
         } catch (Exception e) {
             response.setAnswer("查询失败");

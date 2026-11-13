@@ -3,6 +3,7 @@ package org.sqlagent.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
@@ -24,6 +25,12 @@ public class OllamaAiService {
     private static final Logger log = LoggerFactory.getLogger(OllamaAiService.class);
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Value("${ollama.base-url:http://localhost:11434}")
+    private String ollamaBaseUrl;
+
+    @Value("${ollama.model:qwen2.5:3b}")
+    private String ollamaModel;
+
     @Autowired
     SchemaService schemaService;
 
@@ -32,6 +39,9 @@ public class OllamaAiService {
 
     @Autowired
     SqlService sqlService;
+
+    @Autowired
+    PromptContextBuilder promptContextBuilder;
 
     @Autowired
     AgentExecutionLogService agentExecutionLogService;
@@ -46,7 +56,8 @@ public class OllamaAiService {
                 ? ""
                 : "Previous SQL:\n" + lastSql + "\n\nPrevious error:\n" + lastError;
 
-        prompt = prompt.replace("{{schema}}", schemaService.getSchema().toString())
+        String relevantSchema = promptContextBuilder.buildSchemaContext(question);
+        prompt = prompt.replace("{{schema}}", relevantSchema)
                 .replace("{{question}}", question)
                 .replace("{{retry_context}}", retryContext);
 
@@ -106,14 +117,14 @@ public class OllamaAiService {
         Map<String, Object> request =
                 new HashMap<>();
 
-        request.put("model", "qwen2.5:3b");
+        request.put("model", ollamaModel);
         request.put("prompt", prompt);
         request.put("stream", false);
 
         try {
             Map response =
                     restTemplate.postForObject(
-                            "http://localhost:11434/api/generate",
+                            ollamaBaseUrl + "/api/generate",
                             request,
                             Map.class
                     );
@@ -151,13 +162,13 @@ public class OllamaAiService {
             Map<String, Object> request =
                     new HashMap<>();
 
-            request.put("model", "qwen2.5:3b");
+            request.put("model", ollamaModel);
             request.put("prompt", prompt);
             request.put("stream", false);
 
             Map response =
                     restTemplate.postForObject(
-                            "http://localhost:11434/api/generate",
+                            ollamaBaseUrl + "/api/generate",
                             request,
                             Map.class
                     );
@@ -173,7 +184,7 @@ public class OllamaAiService {
 
     @Cacheable(value = "example-questions", key = "'default'")
     public List<String> generateExamples() {
-        String schema = schemaService.getSchema();
+        String schema = promptContextBuilder.buildExampleSchemaContext();
 
         String prompt = promptService.loadPrompt("example-questions.txt");
         prompt = prompt.replace("{{schema}}", schema);

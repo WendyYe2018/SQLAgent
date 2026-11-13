@@ -8,8 +8,13 @@ spring:
 server:
   port: 8083
 
-chroma:
-  url: http://127.0.0.1:8000
+ollama:
+  base-url: http://localhost:11434
+  model: qwen2.5:3b
+  embedding-model: nomic-embed-text
+
+qdrant:
+  base-url: http://localhost:6333
 
 logging:
   level:

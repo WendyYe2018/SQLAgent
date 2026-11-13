@@ -19,6 +19,9 @@ Rules:
 14. Do not assume enum values; if a field is a category, inspect the sample rows before writing filters.
 15. When calculating ratio or percentage, always use the total number of rows as the denominator.
 16. If the previous SQL failed, fix it based on the previous error. Do not repeat the same invalid table or column names.
+17. If a numeric-looking ID is stored as varchar/text in the schema, do not compare it with a quoted string unless the sample values clearly show string format; prefer converting to the actual column type or matching the real data pattern.
+18. If the user mentions a numeric ID such as 37, and the schema shows the column is varchar or text, do not add quotes automatically just because the user wrote a string-like value; instead follow the actual column type and the sample data.
+19. For user identity filters, inspect sample rows first to confirm whether the identifier is stored as bigint, int, varchar, or includes prefixes like 'customer_'.
 
 Database Schema:
 
